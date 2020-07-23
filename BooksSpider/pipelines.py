@@ -53,7 +53,7 @@ class JsonItemExporterPipeline:
 class MysqlExportPipeline:
     # 自己定义的数据库插入类,, 同步机制
     def __init__(self):
-        self.DB = MySQLContextManager(host='', port=3306, user="", password="", database="")
+        self.DB = MySQLContextManager(host='47.96.183.136', port=3306, user="root", password="Admin123!", database="spider")
 
     def process_item(self, item, spider):
         with self.DB as DB:
@@ -94,7 +94,7 @@ class MysqkTwistedPipeline:
 
     def do_insert(self, cursor, item):
         # 执行具体的插入
-        values = tuple((value if not isinstance(value, list) else value[0] for _, value in item.items())) # 这里可能会有问题，因为字典是无续序列
+        values = tuple((value if not isinstance(value, list) else value[0] for _, value in item.items()))
         insert_sql = 'INSERT INTO books_spider (url, name, price, in_stock, type, comment, front_cover_url, front_cover_path) VALUES {values}'.format(
             values=values)
         cursor.execute(insert_sql)
@@ -102,13 +102,12 @@ class MysqkTwistedPipeline:
 
 class BookImagesPipeline(ImagesPipeline):
     def item_completed(self, results, item, info):
-        if 'front_cover_path' in item:
+        if 'front_cover_url' in item:
             for ok, value in results:
                 book_image_path = value['path']
             item['front_cover_path'] = book_image_path
 
         return item
-
 
 
 

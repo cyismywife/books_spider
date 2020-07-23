@@ -100,7 +100,7 @@ IMAGES_STORE = os.path.join(project_dir, 'book_images')
 
 
 
-MYSQL_HOST = ''
+MYSQL_HOST = '47.96.183.136'
 MYSQL_DBNAME = "spider"
-MYSQL_USER = ""
-MYSQL_PASSWORD = ""
+MYSQL_USER = "root"
+MYSQL_PASSWORD = "Admin123!"

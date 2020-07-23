@@ -20,6 +20,13 @@ def re_match(value):
 def return_value(value):
     return value
 
+def make_int_or_float(value):
+    # 将值转换成int或float
+    if '.' in value:
+        return float(value)
+    else:
+        return int(value)
+
 
 class BooksspiderItem(scrapy.Item):
     # define the fields for your item here like:
@@ -30,15 +37,17 @@ class BooksspiderItem(scrapy.Item):
 class BooksItem(scrapy.Item):
     name = scrapy.Field()
     in_stock = scrapy.Field(
-        input_processor=MapCompose(re_match),
+        input_processor=MapCompose(re_match, make_int_or_float),
         output_processor=TakeFirst()
     )
     price = scrapy.Field(
-        input_processor=MapCompose(re_match),
+        input_processor=MapCompose(re_match, make_int_or_float),
         output_processor=TakeFirst()
     )
     type = scrapy.Field()
-    comment = scrapy.Field()
+    comment = scrapy.Field(
+        # output_processor=MapCompose(make_int_or_float)
+    )
     url = scrapy.Field()
     front_cover_url = scrapy.Field(
         output_processor=MapCompose(return_value)
